@@ -2,17 +2,29 @@ require('dotenv/config');
 
 const shellComand =  require('./utils/shellComand');
 
-exports.runMigrations = async (req, res) => {
+exports.migrations = async (req, res) => {
 
+  //valida method http
   if (req.method !== 'POST') {
-    return res.status(400).json({ error: `invalid method: ${req.method}` })
+    return res.status(400).json({ error: `invalid method: ${req.method}` });
   }
-
+  
+  //valida parâmetros de consulta da requisição 
+  const [, method, others] = req.params["0"].split('/')
+  if (!method) {
+    return res.status(400).json({ error: 'query parameters is missing' });
+  }
+  if (!!others || !['run','revert'].includes(method)) {
+    return res.status(400).json({ error: 'invalid query parameters' });
+  }
+  
+  
   try {
-    const result = await shellComand.exec('npm run typeorm migration:run');
+    //executa as migrations
+    const result = await shellComand.exec(`npm run typeorm migration:${method}`);
     return res.status(200).json({
       message: result.includes('No migrations are pending')?
-          'No migrations are pending' : 'Successfully completed'
+          'No migrations are pending' : 'successfully completed'
     });
   
   } catch (error) {
