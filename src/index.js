@@ -9,8 +9,12 @@ exports.migrations = async (req, res) => {
     return res.status(400).json({ error: `invalid method: ${req.method}` });
   }
   
-  //valida parâmetros de consulta da requisição 
-  const [, method, others] = req.params["0"].split('/')
+  //captura os parâmetros de consulta da requisição
+  const params = req.params["0"].split('/');
+  const method = process.env.NODE_ENV === 'production'? params[0] : params[1];
+  const others = process.env.NODE_ENV === 'production'? params[1] : params[2];
+
+  //valida parâmetros de consulta 
   if (!method) {
     return res.status(400).json({ error: 'query parameters is missing' });
   }
