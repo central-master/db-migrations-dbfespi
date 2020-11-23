@@ -15,7 +15,7 @@ on:
 
 env:
   SERVICE_NAME: "db-migrations-dbfespi"
-  ENTRY_POINT: "runMigrations"
+  ENTRY_POINT: "migrations"
   REGION: "us-central1"
 
 jobs:
@@ -39,10 +39,10 @@ jobs:
       run: |
         gcloud functions deploy "$SERVICE_NAME" \
         --no-user-output-enabled \
-#        --runtime nodejs10 \
-#        --trigger-http \
-#        --allow-unauthenticated \
-#        --entry-point "$ENTRY_POINT" \
+        --runtime nodejs10 \
+        --trigger-http \
+        --allow-unauthenticated \
+        --entry-point "$ENTRY_POINT" \
 #        --region "$REGION" \
 #        --set-env-vars DB_HOST=,DB_PORT=,DB_USERNAME=,DB_PASSWORD=,DB_DATABASE=
 # Notas:

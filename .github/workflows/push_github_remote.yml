@@ -10,9 +10,7 @@
 name: GitHub Push to Central Master Repository
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch
 
 env:
   GITHUB_REMOTE_USERNAME: "central-master"
