@@ -1,0 +1,22 @@
+{
+  "name": "dbfespi",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "repository": "git@github.com:cesar-pinheiro/centralmaster-migrations-dbfespi.git",
+  "author": "César A Pinheiro <cesar.a.pinheiro@hotmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "functions-framework --target=runMigrations --source=src",
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "pg": "^8.4.1",
+    "ts-node": "^9.0.0",
+    "typeorm": "^0.2.28",
+    "typescript": "^4.0.3"
+  },
+  "devDependencies": {
+    "@google-cloud/functions-framework": "^1.7.1"
+  }
+}

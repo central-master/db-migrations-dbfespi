@@ -1,0 +1,50 @@
+# Este worflow realiza o deploy dos arquivos da branch testing para o Cloud Functions do
+# GCP quando o evento push é dispado na banch testing.
+#
+# References:
+#   - https://github.com/google-github-actions/setup-gcloud
+#   - https://cloud.google.com/sdk/gcloud/reference/alpha/functions/deploy
+#   - https://cloud.google.com/sdk/gcloud/reference/functions/deploy
+#
+
+
+name: Deploy to Google Cloud Function
+
+on:
+  workflow_dispatch
+
+env:
+  SERVICE_NAME: "db-migrations-dbfespi"
+  ENTRY_POINT: "runMigrations"
+  REGION: "us-central1"
+
+jobs:
+  setup-build-deploy:
+    name: Setup, Build, and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    # Setup gcloud CLI
+    - name: Connect to Google Cloud CLI
+      uses: google-github-actions/setup-gcloud@master 
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        
+    # Build and push image to Google Cloud Funcios
+    - name: Push to Cloud Functions
+      run: |
+        gcloud functions deploy "$SERVICE_NAME" \
+        --no-user-output-enabled \
+#        --runtime nodejs10 \
+#        --trigger-http \
+#        --allow-unauthenticated \
+#        --entry-point "$ENTRY_POINT" \
+#        --region "$REGION" \
+#        --set-env-vars DB_HOST=,DB_PORT=,DB_USERNAME=,DB_PASSWORD=,DB_DATABASE=
+# Notas:
+# Descomentar as linhas de argumentos acima somente quando primeira implantação ou reimplantação da Function.
+# Neste caso, após a implantação da Function, acessar a mesma através do GCP e definir os valores das variáveis de ambiente.
